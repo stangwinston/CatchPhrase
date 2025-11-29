@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catchphrase</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="flash-overlay" id="flashOverlay"></div>
+    
+    <!-- Rules Modal -->
+    <div class="modal-overlay" id="rulesModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeRules()">✕</button>
+            <h2>🎯 How to Play</h2>
+            <ul>
+                <li>Divide into <span class="highlight">two teams</span> and sit in alternating order</li>
+                <li>One player gives clues to get their team to guess the word or phrase</li>
+                <li>You <span class="highlight">cannot</span> say the word, use rhymes, or say part of the word</li>
+                <li>When your team guesses correctly, press <span class="highlight">"Got It!"</span> to pass to the other team</li>
+                <li>The screen will flash and beep faster as time runs out!</li>
+                <li>When the buzzer sounds, the team <span class="highlight">NOT</span> holding the device scores 1 point</li>
+                <li>First team to reach <span class="highlight">7 points</span> wins!</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Winner Overlay -->
+    <div class="winner-overlay" id="winnerOverlay">
+        <div class="winner-text" id="winnerText"></div>
+        <button class="btn-start" onclick="resetGame()" style="padding: 15px 40px; font-size: 1.1rem;">Play Again</button>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div style="width: 32px;"></div>
+            <h1>🎮 Catchphrase</h1>
+            <button class="help-btn" onclick="showRules()">?</button>
+        </div>
+
+        <!-- Category Selector -->
+        <div class="category-selector">
+            <button class="category-btn" data-category="world" onclick="selectCategory('world')">🌍 World</button>
+            <button class="category-btn" data-category="sports" onclick="selectCategory('sports')">⚽ Sports</button>
+            <button class="category-btn" data-category="science" onclick="selectCategory('science')">🔬 Science</button>
+        </div>
+
+        <!-- Game Area -->
+        <div class="game-area">
+            <!-- Current Team Display -->
+            <div class="team-display team1" id="teamDisplay">Team 1</div>
+            
+            <!-- Score Display -->
+            <div class="score-display" id="scoreDisplay">Score: <span>0</span> - <span>0</span></div>
+
+            <!-- Phrase Display -->
+            <div class="phrase-display">
+                <div class="phrase" id="phrase">—</div>
+            </div>
+
+            <!-- Status -->
+            <div class="status" id="status">Select a category to start!</div>
+
+            <!-- Pre-game Controls -->
+            <div class="controls-pregame" id="controlsPregame">
+                <button class="btn-start" id="startBtn" onclick="startRound()" disabled>Start Round</button>
+            </div>
+
+            <!-- In-game Controls -->
+            <div class="controls-ingame hidden" id="controlsIngame">
+                <button class="btn-got-it" onclick="gotIt()">Got It!</button>
+                <button class="btn-skip" onclick="skipWord()">Skip</button>
+                <button class="btn-reset" onclick="resetGame()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load category files -->
+    <script src="categories/world.js"></script>
+    <script src="categories/sports.js"></script>
+    <script src="categories/science.js"></script>
+    
+    <!-- Load game logic -->
+    <script src="game.js"></script>
+</body>
+</html>

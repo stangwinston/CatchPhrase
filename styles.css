@@ -1,0 +1,160 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; touch-action: manipulation; }
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+    color: white; 
+}
+
+/* Flash overlay for timer warnings */
+.flash-overlay { 
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+    pointer-events: none; z-index: 1000; opacity: 0; transition: opacity 0.1s; 
+}
+.flash-overlay.active { box-shadow: inset 0 0 80px 40px #ff4444; opacity: 1; }
+.flash-overlay.buzzer { background: rgba(255, 0, 0, 0.6); opacity: 1; }
+
+/* Main container */
+.container { 
+    height: 100vh; height: 100dvh; 
+    display: flex; flex-direction: column; 
+    padding: 10px; max-width: 500px; margin: 0 auto; 
+}
+
+/* Header */
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+h1 { 
+    font-size: 1.6rem; 
+    background: linear-gradient(90deg, #00d9ff, #00ff88); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; 
+    flex: 1; text-align: center; 
+}
+.help-btn { 
+    background: rgba(255, 255, 255, 0.1); border: 2px solid #00d9ff; color: #00d9ff; 
+    width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; 
+}
+
+/* Category selector */
+.category-selector { display: flex; justify-content: center; gap: 6px; margin-bottom: 10px; }
+.category-btn { 
+    padding: 6px 12px; border: 2px solid #444; 
+    background: rgba(255, 255, 255, 0.05); color: #aaa; 
+    border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+}
+.category-btn.active { 
+    background: linear-gradient(135deg, #00d9ff 0%, #00ff88 100%); 
+    color: #1a1a2e; border-color: transparent; font-weight: bold; 
+}
+.category-btn.disabled { opacity: 0.3; pointer-events: none; }
+.category-btn.locked { opacity: 0.5; pointer-events: none; }
+
+/* Game area */
+.game-area { 
+    flex: 1; display: flex; flex-direction: column; 
+    align-items: center; justify-content: space-between; min-height: 0;
+    padding: 10px 0;
+}
+
+/* Team display */
+.team-display { 
+    font-size: 2.5rem; font-weight: bold; text-align: center; 
+    padding: 15px 30px; border-radius: 15px; margin-bottom: 10px;
+}
+.team-display.team1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.team-display.team2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+
+/* Score display */
+.score-display { font-size: 1.2rem; color: #aaa; margin-bottom: 10px; }
+.score-display span { font-weight: bold; color: white; }
+
+/* Phrase display */
+.phrase-display { 
+    flex: 1; display: flex; align-items: center; justify-content: center; 
+    width: 100%; min-height: 0; padding: 10px; 
+}
+.phrase { 
+    font-size: 2rem; font-weight: bold; text-transform: uppercase; 
+    letter-spacing: 1px; text-align: center; word-wrap: break-word; max-width: 100%; 
+}
+
+/* Status message */
+.status { 
+    text-align: center; font-size: 0.9rem; margin-bottom: 10px; 
+    color: #aaa; min-height: 20px; padding: 0 10px; 
+}
+
+/* Controls - Pre-game */
+.controls-pregame { 
+    display: flex; flex-direction: column; align-items: center; 
+    gap: 10px; width: 100%; 
+}
+.btn-start { 
+    background: linear-gradient(135deg, #00d9ff 0%, #00ff88 100%); 
+    color: #1a1a2e; width: 100%; padding: 20px; font-size: 1.2rem; 
+}
+
+/* Controls - In-game */
+.controls-ingame { 
+    display: flex; flex-direction: column; align-items: center; 
+    width: 100%; gap: 20px;
+}
+.btn-got-it { 
+    background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%); 
+    color: #1a1a2e; width: 100%; padding: 25px; font-size: 1.5rem; 
+}
+.btn-skip { 
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); 
+    color: #1a1a2e; width: 80%; padding: 15px; font-size: 1rem; 
+}
+.btn-reset { 
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%); 
+    color: white; width: 50%; padding: 10px; font-size: 0.8rem; margin-top: 10px;
+}
+
+/* General button styles */
+button { 
+    font-weight: bold; border: none; border-radius: 10px; 
+    cursor: pointer; text-transform: uppercase; 
+}
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.hidden { display: none !important; }
+
+/* Modal styles */
+.modal-overlay { 
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+    background: rgba(0, 0, 0, 0.85); display: none; 
+    align-items: center; justify-content: center; z-index: 3000; padding: 20px; 
+}
+.modal-overlay.show { display: flex; }
+.modal { 
+    background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%); 
+    border: 2px solid #00d9ff; border-radius: 15px; padding: 20px; 
+    max-width: 350px; width: 100%; position: relative; max-height: 80vh; overflow-y: auto; 
+}
+.modal-close { 
+    position: absolute; top: 10px; right: 10px; background: none; 
+    border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; padding: 5px 10px; 
+}
+.modal h2 { color: #00d9ff; margin-bottom: 15px; font-size: 1.4rem; }
+.modal ul { list-style: none; padding-left: 0; }
+.modal li { 
+    margin-bottom: 10px; padding-left: 20px; position: relative; 
+    color: #ccc; font-size: 0.9rem; line-height: 1.4; 
+}
+.modal li::before { content: "•"; position: absolute; left: 0; color: #00ff88; }
+.modal .highlight { color: #ffd700; font-weight: bold; }
+
+/* Winner overlay */
+.winner-overlay { 
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+    background: rgba(0, 0, 0, 0.9); display: none; 
+    align-items: center; justify-content: center; z-index: 2000; 
+    flex-direction: column; padding: 20px; 
+}
+.winner-overlay.show { display: flex; }
+.winner-text { 
+    font-size: 2rem; font-weight: bold; text-align: center; 
+    margin-bottom: 20px; animation: pulse 1s ease-in-out infinite; 
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
